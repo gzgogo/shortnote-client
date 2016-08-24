@@ -1,11 +1,10 @@
 
 import './root.styl';
 import React from 'react';
-import { Provider } from 'react-redux';
-import configureStore from '../../reducers/configureStore';
+import { createStore, Provider } from 'react-redux';
 import App from '../app/app';
 
-const store = configureStore();
+let store = createStore();
 
 class root extends React.Component {
   render() {

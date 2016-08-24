@@ -1,6 +1,5 @@
-import request from 'request';
+
 import shortid from 'shortid';
-import errors from '../constants/errors';
 
 var requestRoot = '';
 
@@ -38,81 +37,16 @@ export function deleteNote(note) {
   }
 }
 
+function receiveNotes(notes) {
+  return {
+    type: ActionTypes.RECEIVE_NOTES,
+    notes
+  }
+}
+
 export function setLoading(loading) {
   return {
     type: ActionTypes.SET_LOADING,
     loading: loading
-  }
-}
-
-// //update notes
-// {
-//   function requestUpdateNotes(note) {
-//     return {
-//       type: ActionType.REQUEST_UPDATE_NOTES
-//     }
-//   }
-//
-//   function receiveUpdateNotes() {
-//     return {
-//       type: ActionTypes.RECEIVE_UPDATE_NOTES,
-//       notes
-//     }
-//   }
-//
-//   export function updateNotes(notes) {
-//     return dispatch => {
-//       dispatch(requestUpdateNotes());
-//       request
-//         .post(requestRoot + '/notes')
-//         .on('response', function (response) {
-//           if (response.statusCode == 200) {
-//             var json = response.json();
-//             dispatch(receiveUpdateNotes(json));
-//           }
-//           else {
-//             dispatch(receiveUpdateNotes({ err: errors.requestNotesFailed }));
-//           }
-//         })
-//         .on('error', function () {
-//           dispatch(receiveUpdateNotes({ err: errors.requestNotesFailed }));
-//         });
-//     }
-//   }
-// }
-
-//fetch notes
-{
-  function requestNotes() {
-    return {
-      type: ActionTypes.REQUEST_NOTES
-    }
-  }
-
-  function receiveNotes(notes) {
-    return {
-      type: ActionTypes.RECEIVE_NOTES,
-      notes
-    }
-  }
-
-  export function fetchNotes() {
-    return dispatch => {
-      dispatch(requestNotes());
-      request
-        .get(requestRoot + '/notes')
-        .on('response', function (response) {
-          if (response.statusCode == 200) {
-            var json = response.json();
-            dispatch(receiveNotes(json));
-          }
-          else {
-            dispatch(receiveNotes({ err: errors.requestNotesFailed }));
-          }
-        })
-        .on('error', function () {
-          dispatch(receiveNotes({ err: errors.requestNotesFailed }));
-        });
-    }
   }
 }
