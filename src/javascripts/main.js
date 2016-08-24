@@ -4,9 +4,9 @@ import '../stylesheets/common-style.styl';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './containers/app/app'
+import Root from './containers/root/root'
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('app-wrapper')
+  <Root />,
+  document.getElementById('root')
 );

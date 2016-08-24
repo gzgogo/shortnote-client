@@ -1,49 +1,71 @@
 
 import './App.styl';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import httpUtil from '../../utils/httpUtil';
+import { addNote, deleteNote, setLoading } from '../actions';
 import Notes from '../../components/notes/notes'
 import Sidebar from '../../components/sidebar/sidebar'
 
-var notes = [
-  {
-    header: 'note 1',
-    body: 'I am a note',
-    id: '1'
-  },
-  {
-    header: 'note 2',
-    body: 'I am a note',
-    id: '2'
-  }
-]
-
-class App extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      notes: notes
-    }
+  }
+
+  componentDidMount() {
+    dispatch(fetchNotes());
+
+    setTimeout(updateNotes, 5000);
+  }
+
+  componentWillReceiveProps(nextProps) {
   }
 
   render() {
     return (
       <div className="app">
-        <Sidebar onAddNote={ e=>this.onAddNote() }></Sidebar>
+        <Sidebar onAddNote={ e => this.onAddNote() }></Sidebar>
         <Notes notes={ this.state.notes } />
       </div>
     );
   }
 
   onAddNote() {
-    var newNote =   {
-      header: `note ${this.state.notes.length + 1}`,
-      body: 'I am a note',
-      id: this.state.notes.length + 1
-    };
+    this.props.dispatch(addNote());
+  }
 
-    this.setState({
-      notes:  [ newNote, ...this.state.notes ]
-    });
+  onDeleteNote() {
+    this.props.dispatch(deleteNote())
+  }
+
+  fetchNotes() {
+    dispatch(setLoading(true));
+
+    var successCallback = function (notes) {
+      dispatch(setLoading(false));
+      dispatch(receiveNotes(notes));
+    }.bind(this);
+
+    var failCallback = function (err) {
+      dispatch(setLoading(false));
+      dispatch(receiveNotes(err));
+    }.bind(this);
+
+    httpUtil.fetchNotes();
+  }
+
+  updateNotes() {
+    const notes = this.props.notes;
+
+    var successCallback = function () {
+      setTimeout(updateNotes, 5000);
+    }.bind(this);
+
+    var failCallback = function () {
+      setTimeout(updateNotes, 5000);
+    }.bind(this);
+
+    httpUtil.updateNotes(notes, successCallback, failCallback);
   }
 };
 

@@ -1,14 +1,29 @@
+*
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
 .note
   width: 250px;
-  border-radius: 40px;
+  //border-radius: 40px;
   float: left;
   //display: inline-block;
   margin-left: 16px;
   margin-bottom: 16px;
+  background-color: #f3f4e5;
+  -webkit-box-shadow: 2px 2px 3px #888;
+  -moz-box-shadow: 2px 2px 3px #888;
+  box-shadow: 2px 2px 3px #888;
   .note-header
+    display: block;
+    width: 100%;
     height: 32px;
     line-height: 32px;
     font-size: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border: none;
+    outline: none;
     text-align: center;
     color: white;
     background-color: #40877c;
@@ -40,7 +55,7 @@
       background-color:#f0f1f7;
       //border-radius:3px;
     &::-webkit-scrollbar-thumb
-      background-color:#40877c;
+      background-color:#dcdfcf;
       //border-radius:3px;
 
 

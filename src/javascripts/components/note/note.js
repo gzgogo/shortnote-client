@@ -6,7 +6,7 @@ class Note extends React.Component {
   render() {
     return (
       <div className="note">
-        <div className="note-header">{this.props.note.header}</div>
+        <input className="note-header" type="text" defaultValue={this.props.note.header}/>
         <textarea className="note-body" name="content" id="content" defaultValue={this.props.note.body}></textarea>
 
         {
