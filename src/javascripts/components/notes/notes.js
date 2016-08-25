@@ -15,10 +15,10 @@ class notes extends React.Component {
     return (
       <div className="notes">
         {
-          // <ReactCSSTransitionGroup transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-          //   { noteNodes }
-          // </ReactCSSTransitionGroup>
-          noteNodes
+          <ReactCSSTransitionGroup transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+            { noteNodes }
+          </ReactCSSTransitionGroup>
+          // noteNodes
         }
       </div>
     );

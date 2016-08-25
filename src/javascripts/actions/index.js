@@ -13,7 +13,8 @@ export const ActionTypes = {
   ADD_NOTE: 'ADD_NOTE',
   DELETE_NOTE: 'DELETE_NOTE',
 
-  SET_LOADING: 'SET_LOADING'
+  SET_LOADING: 'SET_LOADING',
+  HINT: 'HINT'
 };
 
 export function addNote() {
@@ -23,7 +24,7 @@ export function addNote() {
     note: {
       id: shortid.generate(),
       userId: shortid.generate(),
-      createTime: createTime.getTime(),
+      createTime: createTime.getTime().toString(),
       header: createTime.toDateString(),
       body: ''
     }
@@ -37,7 +38,8 @@ export function deleteNote(note) {
   }
 }
 
-function receiveNotes(notes) {
+export function receiveNotes(notes) {
+  console.log(notes);
   return {
     type: ActionTypes.RECEIVE_NOTES,
     notes
@@ -48,5 +50,12 @@ export function setLoading(loading) {
   return {
     type: ActionTypes.SET_LOADING,
     loading: loading
+  }
+}
+
+export function hintMsg(msg) {
+  return {
+    type: ActionTypes.TOAST,
+    msg
   }
 }

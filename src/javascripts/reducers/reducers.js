@@ -25,9 +25,19 @@ function notes(state = [], action) {
   }
 }
 
+function msg(state = '', action) {
+  switch (action.type) {
+    case ActionTypes.HINT:
+      return action.msg;
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   loading,
-  notes
+  notes,
+  msg
 });
 
 export default rootReducer;

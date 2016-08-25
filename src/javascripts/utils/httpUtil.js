@@ -1,39 +1,43 @@
-import request from 'request';
 
-var requestRoot = '';
+const requestRoot = '';
 
-export default httpUtil = {
-  fetchNotes() {
-    request
-      .get(requestRoot + '/notes')
-      .on('response', function (response) {
-        if (response.statusCode == 200) {
-          var json = response.json();
-          typeof successCallback === 'function' && successCallback(json);
+const httpUtil = {
+  fetchNotes(successCallback, failCallback) {
+    $.ajax({
+      'url': requestRoot + '/notes',
+      'type': 'get',
+      'success': (data) => {
+        if (data.errCode === 0) {
+          typeof successCallback === 'function' && successCallback(data);
         }
         else {
-          typeof failCallback === 'function' && failCallback(json.errMsg || '加载失败，请刷新重新加载');
+          typeof failCallback === 'function' && failCallback(data.errMsg || '加载失败，请检查您的网络连接');
         }
-      })
-      .on('error', function () {
-        typeof failCallback === 'function' && failCallback(json.errMsg || '加载失败，请刷新重新加载');
-      });
+      },
+      'error': (xhr, err, ex) => {
+        //err:  "timeout", "error", "notmodified", "parsererror"
+        typeof failCallback === 'function' && failCallback('加载失败，请检查您的网络连接');
+      }
+    });
   },
 
   updateNotes(notes, successCallback, failCallback) {
-    request
-      .post(requestRoot + '/notes')
-      .on('response', function (response) {
-        if (response.statusCode == 200) {
-          var json = response.json();
-          typeof successCallback === 'function' && successCallback(json);
+    $.ajax({
+      'url': requestRoot + '/notes',
+      'type': 'post',
+      'success': (data) => {
+        if (data.errCode === 0) {
+          typeof successCallback === 'function' && successCallback(data);
         }
         else {
-          typeof failCallback === 'function' && failCallback(json.errMsg || '同步失败，请稍后再试');
+          typeof failCallback === 'function' && failCallback(data.errMsg || '同步失败，请检查您的网络连接');
         }
-      })
-      .on('error', function () {
-        typeof failCallback === 'function' && failCallback('同步失败，请稍后再试');
-      });
-  },
+      },
+      'error': (xhr, err, ex) => {
+        typeof failCallback === 'function' && failCallback('同步失败，请检查您的网络连接');
+      }
+    });
+  }
 };
+
+export default httpUtil;

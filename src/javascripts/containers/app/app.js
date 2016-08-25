@@ -3,7 +3,7 @@ import './App.styl';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import httpUtil from '../../utils/httpUtil';
-import { addNote, deleteNote, setLoading } from '../../actions';
+import { addNote, deleteNote, receiveNotes, setLoading, hintMsg } from '../../actions';
 import Notes from '../../components/notes/notes'
 import Sidebar from '../../components/sidebar/sidebar'
 
@@ -13,18 +13,18 @@ class App extends Component {
   }
 
   componentDidMount() {
-    dispatch(fetchNotes());
-    setTimeout(updateNotes, 5000);
+    this.fetchNotes();
   }
 
   componentWillReceiveProps(nextProps) {
   }
 
   render() {
+    const { dispatch, loading, notes } = this.props;
     return (
       <div className="app">
         <Sidebar onAddNote={ e => this.onAddNote() }></Sidebar>
-        <Notes notes={ this.state.notes } />
+        <Notes notes={ notes } />
       </div>
     );
   }
@@ -38,16 +38,20 @@ class App extends Component {
   }
 
   fetchNotes() {
+    const { dispatch } = this.props;
+
     dispatch(setLoading(true));
 
     var successCallback = function (notes) {
       dispatch(setLoading(false));
-      dispatch(receiveNotes(notes));
+      dispatch(receiveNotes(notes.items));
+
+      setTimeout(this.updateNotes.bind(this), 5000);
     }.bind(this);
 
     var failCallback = function (err) {
       dispatch(setLoading(false));
-      dispatch(receiveNotes(err));
+      dispatch(hintMsg(err));
     }.bind(this);
 
     httpUtil.fetchNotes(successCallback, failCallback);
@@ -57,11 +61,11 @@ class App extends Component {
     const notes = this.props.notes;
 
     var successCallback = function () {
-      setTimeout(updateNotes, 5000);
+      setTimeout(this.updateNotes.bind(this), 5000);
     }.bind(this);
 
     var failCallback = function () {
-      setTimeout(updateNotes, 5000);
+      setTimeout(this.updateNotes.bind(this), 5000);
     }.bind(this);
 
     httpUtil.updateNotes(notes, successCallback, failCallback);
